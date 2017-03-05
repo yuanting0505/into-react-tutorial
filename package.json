@@ -1,0 +1,10 @@
+{
+  "name": "into-react-tutorial",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "JasmineYuan <jyuan@splunk.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^2.2.1"
+  }
+}
