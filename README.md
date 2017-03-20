@@ -176,7 +176,11 @@ categories: programming
 
 <img src="http://omcdckn46.bkt.clouddn.com/3.png" width=250px>  
 
-我们热心的网友又发现了一个问题，就是当前的页面在修改`index.jsx`后，虽然console里面显示了编译成功，但浏览器里面的内容并没有发生变化，就算手动刷新页面，新的内容也不会上去。这是为什么呢？因为`webpack-dev-server`在重新编译文件后，只是把新文件放在内存里，文件系统里的还是原来编译的，手动刷新，加载的是文件系统里的原来的文件，因此内容不会上去。这时候我们需要用到一个叫[`publicPath`](https://github.com/webpack/docs/wiki/configuration#outputpublicpath)的属性，这个属性在`webpack`中的作用其实是为静态资源加上路径（有时候我们会把静态资源放到比如cdn的地方，这时候只需要设置`publicPath`，就可以在编译的时候统一修改。但对于`webpack-dev-server`而言，这个选项规定了本地服务器把哪个文件夹的内容serve到内存里。因此我们修改`webpack.config.js`的`output`如下：
+我们热心的网友又发现了一个问题，就是当前的页面在修改`index.jsx`后，虽然console里面显示了编译成功，但浏览器里面的内容并没有发生变化，就算手动刷新页面，新的内容也不会上去。这是为什么呢？因为`webpack-dev-server`在重新编译文件后，只是把新文件放在内存里，文件系统里的还是原来编译的，手动刷新，加载的是文件系统里的原来的文件，因此内容不会上去。这时候我们需要用到一个叫[`publicPath`](https://github.com/webpack/docs/wiki/configuration#outputpublicpath)的属性，这个属性在`webpack`中的作用其实是为静态资源加上路径（有时候我们会把静态资源放到比如cdn的地方，这时候只需要设置`publicPath`，就可以在编译的时候统一修改。但对于`webpack-dev-server`而言，这个选项规定了本地服务器把哪个文件夹的内容serve到内存里。
+
+> From [this](webpack.github.io/docs/configuration.html#output-publicpath), it seems this option tells webpack to fill in the correct url or path of assets in the generated files, not just for middlewares. When running dev server, I think the middleware looks at publichPath to hijack requests and return the in-memory files
+
+因此我们修改`webpack.config.js`的`output`如下：
 
 	    output: {
         	path: BUILD_DIR,
