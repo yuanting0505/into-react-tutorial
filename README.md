@@ -1,9 +1,14 @@
-从零开始学习React: 使用Yarn, Webpack和Babel来搭建环境
-========
-###序言
+---
+title: "从零开始学习React: 使用Yarn, Webpack和Babel来搭建环境"
+date: 2017-03-06 16:26:51
+tags: [Programming, JavaScript, React]
+categories: programming
+---
+
+### 序言
 最近我开始学习炙手可热的[React](https://facebook.github.io/react/)，在浏览了官网的[Get Started](https://facebook.github.io/react/docs/hello-world.html)部分之后，我想动手写一写代码，这才发现官网并没有给出详细的环境搭建过程，而且我并不想使用官网提供的boilerplate项目[Create React App](https://github.com/facebookincubator/create-react-app)。因此，我把这个过程记录下来，希望可以给新手们一点帮忙，这里并不介绍`React`相关的基础知识，只介绍环境的搭建过程。来，让我们从零开始，跟着贾思敏姐姐一步步搭建一个`Hello Jasmine`的`React`项目。
 
-###创建项目目录
+### 创建项目目录
 在安装后`Git`后，为项目新建一个目录，并初始化git。
 
 	mkdir into-react
@@ -11,7 +16,7 @@
 	git init
 	
 	
-###跟着急性子的我先写Hello Jasmine
+### 跟着急性子的我先写Hello Jasmine
 急性子的我，已经等不及想写点`React`代码了，我怕一步步部署好`webpack`，写好`.babelrc`等等之后，热情就没了，所以让我们先来写这个神奇的`jsx`文件，并命名为`index.jsx`。
 
 	import React from 'react';
@@ -31,7 +36,7 @@
 
 让我们一个个问题来解决。
 
-####新建HTML文件
+### 新建HTML文件
 首先，让我们新建包含`id`为`root`元素的`index.html`, 内容为：
 
 	<html>
@@ -44,7 +49,7 @@
     	</body>
 		</html>
 
-####使用Webpack把需要的资源文件打包
+### 使用Webpack把需要的资源文件打包
 接下来的问题就是，`index.jsx`中使用了`react`和`react-dom`，要让`index.jsx`运行起来，我们的页面中需要包含`react`和`react-dom`。我们使用`Webpack`来把所有内容打包到`bundle.js`，然后在`index.html`中添加`bundle.js`。首先，使用`yarn init`初始化项目（可以一路回车完成配置），然后使用`yarn`在项目中安装`Webpack`。然后我们把`node_modules`放进`.gitignore`中。
 
 	yarn init
@@ -71,12 +76,21 @@
 然后，我们把下面一行添加到`index.html`文件里面：
 
 	<script src="public/bundle.js" type="text/javascript"></script>
+
+有热心网友遇到了以下错误：
+<img src="http://omcdckn46.bkt.clouddn.com/react-error.png" width="600px">
+
+原因是把`bundle.js`放在了`head`里面，最好是放在`body`最下面，确保这个时候`DOM`里面已经有`id`为`root`的`div`了。如果一定想放在`head`里面，可以在`script`里面加一个`defer`的attribute。
 	
+	<script src="public/bundle.js" defer type="text/javascript"></script>
+
+`defer`可以保证该`js`在`HTML`解析完成后，再进行执行。当然了，也可以把`ReactDOM.render`放进`$(document).ready()`里面。`defer`和`async`还有不加的区别可以参考[这篇文章](http://www.growingwiththeweb.com/2014/02/async-vs-defer-attributes.html)。	
+
 当前我们的项目结构如下：
 
 <img src="http://omcdckn46.bkt.clouddn.com/1.png" width="200px">
 
-####使用Babel转换ES2015语法和JSX
+### 使用Babel转换ES2015语法和JSX
 当我们使用`webpack webpack.config.js`来生成`bundle.js`时，我们发现会报错：
 
 	Unexpected token (5:4)
@@ -132,7 +146,7 @@
 
 这个时候使用`webpack`来编译项目，发现如下错误：
 
-<img src="http://omcdckn46.bkt.clouddn.com/2.png" width=400px>
+<img src="http://omcdckn46.bkt.clouddn.com/2.png" width=600px>
 
 我们虽然指定了`babel-loader`来处理`jsx`文件，也安装了转换文件所需要的`babel-es2015`和`babel-react`，但我们在项目里并没有指定用这两个插件。因此，我们在根目录下添加`.babelrc`文件：
 
@@ -142,7 +156,7 @@
 	
 `babel-loader`会自动去读这个文件，再次运行`webpack`，我们发现build已经成功了。
 
-####部署服务器来看我们的Hello！
+### 部署服务器来看我们的Hello！
 现在离看到我们的页面只差一步了，就是起一个服务器。我们安装`webpack-dev-server`来启动并`watch`项目，这样当你修改代码的时候，就可以自动编译并显示在浏览器上。
 
 	yarn add webpack-dev-server --dev
