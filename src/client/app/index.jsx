@@ -1,8 +1,9 @@
-	import React from 'react';
-	import ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Clock from './clock.jsx';
 
-	ReactDOM.render(
-  		<h1>Hello, Jasmine!</h1>,
-  		document.getElementById('root')
-	);
+ReactDOM.render(
+	<Clock />,
+	document.getElementById('root')
+);
     
