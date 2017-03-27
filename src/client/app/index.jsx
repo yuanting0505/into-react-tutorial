@@ -16,11 +16,11 @@ class Board extends React.Component {
 	render() {
 		let divs = [];
 		let self = this;
-		
+
 		for (let i = 0; i <= 2; i++) {
 			let squares = [];
 			for (let j = 0; j <= 2; j++) {
-				squares.push(self.renderSquare(3*i+j))
+				squares.push(self.renderSquare(3 * i + j))
 			}
 			divs.push(<div className="board-row" key={i}>{squares}</div>);
 		}
@@ -37,7 +37,8 @@ class Game extends React.Component {
 			}],
 			xIsNext: true,
 			stepNumber: 0,
-			locations: []
+			locations: [],
+			ascend: true
 		};
 	}
 	jumpTo(step) {
@@ -77,6 +78,11 @@ class Game extends React.Component {
 			locations: locations
 		});
 	}
+	handleClickBtn() {
+		this.setState({
+			ascend: !this.state.ascend
+		});
+	}
 	render() {
 		const history = this.state.history;
 		const current = history[this.state.stepNumber];
@@ -90,13 +96,18 @@ class Game extends React.Component {
 			status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 		}
 
-		const moves = history.map((step, move) => {
+		const ascend = this.state.ascend ? 'Discend' : 'Ascend';
+
+		let moves = [];
+
+		history.forEach((step, move) => {
 			const desc = move ? 'Move ' + translateLocation(locations[move - 1]) : 'Game start';
-			return (
+			let list = (
 				<li key={move}>
 					<a href='#' onClick={(e) => this.handleListClick(e, move)}>{desc}</a>
 				</li>
 			);
+			this.state.ascend ? moves.push(list) : moves.unshift(list);
 		});
 
 		return (
@@ -106,6 +117,7 @@ class Game extends React.Component {
 				</div>
 				<div className="game-info">
 					<div>{status}</div>
+					<button onClick={() => this.handleClickBtn()}>{ascend}</button>
 					<ol>{moves}</ol>
 				</div>
 			</div>
